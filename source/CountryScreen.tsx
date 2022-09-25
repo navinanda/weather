@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, SafeAreaView, Image, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, SafeAreaView, Image, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './RootStackPrams';
@@ -36,49 +36,40 @@ const CountryScreen = ({route}: any) => {
     }, []);
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.flex}>
         {!loading ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={[styles.flex, styles.justifyContent, styles.alignItems]}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         ) : status ? (
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={[styles.alignItems, styles.justifyContent]}>
             <Text style={{ fontSize: 16 }}>Country not available</Text>
           </View> 
         ) : (
-          <View style={{ flex: 1 }}> 
-            <View style={{ flex: 1, alignItems: 'center' }}>
-              <Text style={{marginVertical: 15, color: '#000', fontSize: 24}}>Country Details</Text>
+          <View style={styles.flex}> 
+            <View style={[styles.flex, styles.alignItems]}>
+              <Text style={styles.title}>Country Details</Text>
               {countryFlag && (
                 <Image
                   source={{uri: countryFlag }}
-                  style={{
-                    width: Dimensions.get('window').width/2 + 70, 
-                    height: Dimensions.get('window').height/4 + 20,
-                    marginVertical: 15,
-                  }}
+                  style={styles.image}
                 />
               )}
             </View>
-            <View style={{ paddingHorizontal: 20, marginHorizontal: 20, marginTop: 70 }}>
-              <Text style={{marginVertical: 10, color: '#000', fontSize: 16}}>Capital  :   {capital}</Text>
-              <Text style={{marginVertical: 10, color: '#000', fontSize: 16}}>Country's Population  :   {population}</Text>
-              <Text style={{marginVertical: 10, color: '#000', fontSize: 16}}>Latitude  :   {latitude} deg</Text>
-              <Text style={{marginVertical: 10, color: '#000', fontSize: 16}}>Longitude  :   {longitude} deg</Text>
+            <View style={styles.detailContainer}>
+              <Text style={styles.detailText}>Capital  :   {capital}</Text>
+              <Text style={styles.detailText}>Country's Population  :   {population}</Text>
+              <Text style={styles.detailText}>Latitude  :   {latitude} deg</Text>
+              <Text style={styles.detailText}>Longitude  :   {longitude} deg</Text>
             </View>
-            <View style={{ alignItems: 'center', marginVertical: 50 }}>
+            <View style={[styles.alignItems, styles.bottomContainer]}>
               <TouchableOpacity
-                style={{
-                  borderRadius: 5,
-                  paddingHorizontal: 80,
-                  paddingVertical: 10,
-                  backgroundColor: '#6200ee',
-                }}
+                style={styles.buttonContainer}
                 onPress={()=>{
                   navigation.navigate('WeatherScreen', {capital})
                 }}
               >
-                <Text style={{ fontSize: 18, color: "#FFF" }}>Capital Weather</Text>
+                <Text style={styles.buttonText}>Capital Weather</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -87,5 +78,50 @@ const CountryScreen = ({route}: any) => {
       </SafeAreaView>
     );
   }
+
+  const styles = StyleSheet.create({
+    flex: {
+      flex: 1,
+    },
+    justifyContent: {
+      justifyContent: 'center',
+    },
+    alignItems: { 
+      alignItems: 'center' 
+    },
+    title: {
+      marginVertical: 15,
+      color: '#000', 
+      fontSize: 24,
+    },
+    image: {
+      width: Dimensions.get('window').width/2 + 70, 
+      height: Dimensions.get('window').height/4 + 20,
+      marginVertical: 15,
+    },
+    detailContainer: {
+      paddingHorizontal: 20, 
+      marginHorizontal: 20, 
+      marginTop: 70,
+    },
+    detailText: {
+      marginVertical: 10,
+      color: '#000', 
+      fontSize: 16,
+    },
+    bottomContainer:{
+      marginVertical: 50, 
+    },
+    buttonContainer: {
+      borderRadius: 5,
+      paddingHorizontal: 80,
+      paddingVertical: 10,
+      backgroundColor: '#6200ee',
+    },
+    buttonText: {
+      fontSize: 18, 
+      color: "#FFF",
+    },
+  });
 
   export default CountryScreen;

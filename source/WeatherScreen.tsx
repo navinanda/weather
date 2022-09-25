@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Dimensions, SafeAreaView, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Dimensions, SafeAreaView, Image, ActivityIndicator, StyleSheet } from 'react-native';
 
 const WeatherScreen = ({route}: any) => {
   const { params } = route;
@@ -24,30 +24,26 @@ const WeatherScreen = ({route}: any) => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.flex}>
       {!loading ? (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={[styles.flex, styles.container]}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <View style={{flex: 1}}>
-          <View style={{ flex: 1, alignItems: 'center' }}>
-            <Text style={{marginVertical: 15, color: '#000', fontSize: 24}}>Weather Details</Text>
+        <View style={styles.flex}>
+          <View style={[styles.flex, styles.imageContainer]}>
+            <Text style={styles.title}>Weather Details</Text>
             {image && (
               <Image
                 source={{uri: image }}
-                style={{
-                  width: Dimensions.get('window').width/3, 
-                  height: Dimensions.get('window').height/6,
-                  marginVertical: 30,
-                }}
+                style={styles.image}
               />
             )}
           </View>
-          <View style={{ flex: 1, paddingHorizontal: 20, marginHorizontal: 20 }}>
-            <Text style={{marginVertical: 12, color: '#000', fontSize: 18}}>Temperature  :  {temperature} C</Text>
-            <Text style={{marginVertical: 12, color: '#000', fontSize: 18}}>Precipitation  :  {precipitation} %</Text>
-            <Text style={{marginVertical: 12, color: '#000', fontSize: 18}}>Wind Speed   :  {windSpeed} kmph</Text>
+          <View style={[styles.flex, styles.detailContainer]}>
+            <Text style={styles.detailText}>Temperature  :  {temperature} C</Text>
+            <Text style={styles.detailText}>Precipitation  :  {precipitation} %</Text>
+            <Text style={styles.detailText}>Wind Speed   :  {windSpeed} kmph</Text>
           </View>
         </View>
       )}
@@ -55,4 +51,36 @@ const WeatherScreen = ({route}: any) => {
   );
 }
 
-  export default WeatherScreen;
+const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
+  container: {
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+  imageContainer: { 
+    alignItems: 'center',
+  },
+  title: {
+    marginVertical: 15, 
+    color: '#000', 
+    fontSize: 24,
+  },
+  image: {
+    width: Dimensions.get('window').width/3, 
+    height: Dimensions.get('window').height/6,
+    marginVertical: 30,
+  },
+  detailContainer: {
+    paddingHorizontal: 20,
+    marginHorizontal: 20
+  },
+  detailText: {
+    marginVertical: 12, 
+    color: '#000', 
+    fontSize: 18,
+  },
+});
+
+export default WeatherScreen;
